@@ -249,6 +249,9 @@ main() {
   # Symlink online-check.sh
   ln -fs $HOME/dotfiles/lib/online-check.sh $HOME/online-check.sh
 
+  # Symlink gpg conf
+  ln -fs $HOME/dotfiles/gnupg/gpg.conf $HOME/.gnupg/gpg.conf
+
   # Write out current crontab
   crontab -l > mycron
   # Echo new cron into cron file
@@ -317,7 +320,7 @@ if answer_is_yes; then
 fi
 
 # create local configs
-[ -f ~/.zsh.local ] && touch ~/.zsh.local
-[ -f ~/.gitconfig.local ] && touch ~/.gitconfig.local
+[ -f ~/.zsh.local ] || touch ~/.zsh.local
+[ -f ~/.gitconfig.local ] || touch ~/.gitconfig.local
 
 print_info "Done. Run 'source ~/.zshrc' to reload zsh config."
