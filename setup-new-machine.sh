@@ -11,11 +11,7 @@ read -n 1
 mkdir -p ~/migration/home
 cd ~/migration
 
-# then compare brew-list to what's in `brew.sh`
-#   comm <(sort brew-list.txt) <(sort brew.sh-cleaned-up)
-
 # let's hold on to these
-
 cp ~/.extra ~/migration/home
 cp ~/.z ~/migration/home
 cp -R ~/.ssh ~/migration/home

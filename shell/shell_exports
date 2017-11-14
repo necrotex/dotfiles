@@ -16,7 +16,7 @@ export LC_ALL="en_US.UTF-8";
 # export ARCHFLAGS="-arch x86_64"
 
 # SSH
-# export SSH_KEY_PATH="~/.ssh/dsa_id"
+export SSH_KEY_PATH="~/.ssh/dsa_id"
 
 # Don’t clear the screen after quitting a manual page
 export MANPAGER="less -X"
@@ -49,9 +49,3 @@ less_options=(
 );
 export LESS="${less_options[*]}"
 export PAGER='less'
-
-
-# here's LS_COLORS
-# github.com/trapd00r/LS_COLORS
-# command -v gdircolors >/dev/null 2>&1 || alias gdircolors="dircolors"
-# eval "$(gdircolors -b ~/.dircolors)"
