@@ -3,14 +3,14 @@ export SHELL=/bin/zsh
 
 # Preferred editor for local and remote sessions
 if [[ -n $SSH_CONNECTION ]]; then
-  export EDITOR='nano'
+  export EDITOR='vim'
 else
-  export EDITOR='nano'
+  export EDITOR='vim'
 fi
 
 # Prefer US English and use UTF-8
-export LC_ALL="en_US.UTF-8"
-export LANG="en_US"
+export LANG="en_US.UTF-8";
+export LC_ALL="en_US.UTF-8";
 
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
@@ -50,11 +50,6 @@ less_options=(
 export LESS="${less_options[*]}"
 export PAGER='less'
 
-# Load nvm
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
-
-export HOMEBREW_CASK_OPTS="--appdir=/Applications"
 
 # here's LS_COLORS
 # github.com/trapd00r/LS_COLORS

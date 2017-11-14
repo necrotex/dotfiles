@@ -7,13 +7,6 @@
 alias sudo="sudo "
 
 # Shortcuts
-alias o="open"
-alias oo="open ."
-alias e="$EDITOR"
-alias g="git"
-alias v="vim"
-alias gh="github"
-alias rm="trash"
 alias x+="chmod +x"
 alias -- +x="chmod +x"
 
@@ -35,20 +28,11 @@ alias ungz="gunzip -k"
 # Trim new lines and copy to clipboard
 alias trimcopy="tr -d '\n' | pbcopy"
 
-alias cask='brew cask' # i <3 u cask
-alias where=which # sometimes i forget
-alias brwe=brew  #typos
-
-# Vagrant aliases
-alias vag='vagrant'
-alias vagup='vagrant up'
-alias vagdestroy='vagrant destroy'
-alias vagssh='vagrant ssh'
-alias vaghalt='vagrant halt'
-
 # Be nice
 alias htop='sudo htop'
-alias hosts='sudo $EDITOR /etc/hosts'   # yes I occasionally 127.0.0.1 twitter.com ;)
+alias pbcopy='xclip -selection clipboard'
+alias pbpaste='xclip -selection clipboard -o'
+
 
 #
 # Time to upgrade `ls`
@@ -85,7 +69,7 @@ alias c='pygmentize -O style=monokai -f console256 -g'
 
 # IP addresses
 alias ip="dig +short myip.opendns.com @resolver1.opendns.com"
-alias localip="ipconfig getifaddr en1"
+alias localip="hostname --ip-address"
 alias myip="ifconfig | grep 'inet ' | grep -v 127.0.0.1 | awk '{print \$2}'"
 
 # Copy my public key to the pasteboard
@@ -177,17 +161,23 @@ alias free_diskspace_report="diskspace_report"
 # File size
 alias fs="stat -f \"%z bytes\""
 
-# Empty the Trash on all mounted volumes and the main HDD.
-# Also, clear Apple’s System Logs & the useless sleepimage to improve shell startup speed
-alias emptytrash="sudo rm -rfv /Volumes/*/.Trashes; sudo grm -rf $HOME/.Trash; sudo rm -rtv /private/var/log/asl/*.asl; sudo rm /private/var/vm/sleepimage"
+# netCons:      Show all open TCP/IP sockets
+alias netCons='lsof -i'
 
-# Show/hide hidden files in Finder
-alias showdotfiles="defaults write com.apple.finder AppleShowAllFiles -bool true && killall Finder"
-alias hidedotfiles="defaults write com.apple.finder AppleShowAllFiles -bool false && killall Finder"
+# lsock:        Display open sockets
+alias lsock='sudo lsof -i -P'
 
-# Show/hide all desktop icons (useful when presenting)
-alias showdesktop="defaults write com.apple.finder CreateDesktop -bool true && killall Finder"
-alias hidedesktop="defaults write com.apple.finder CreateDesktop -bool false && killall Finder"
+# lsockU:       Display only open UDP sockets
+alias lsockU='sudo lsof -nP | grep UDP'
+
+# lsockT:       Display only open TCP sockets
+alias lsockT='sudo lsof -nP | grep TCP'
+
+# openPorts:    All listening connections
+alias openPorts='sudo lsof -i | grep LISTEN'
+
+# showBlocked:  All ipfw rules inc/ blocked IPs
+alias showBlocked='sudo ipfw list'
 
 # zshrc config
 alias zshrc="${EDITOR} ${$(cd -P $(dirname $0) && cd ..; pwd -P)}"
@@ -195,12 +185,3 @@ alias reload="source ~/.zshrc && echo 'Shell config reloaded from ~/.zshrc'"
 
 # zsh.local config
 alias localrc="if [[ -a ~/.zsh.local ]]; then ${EDITOR} ~/.zsh.local; fi"
-
-# Update installed Ruby gems, Homebrew, npm, and their installed packages
-alias brew_update="brew -v update; brew upgrade --force-bottle --cleanup; brew cleanup; brew cask cleanup; brew prune; brew doctor; npm-check -g -u"
-alias update_brew_npm_gem='brew_update; npm install npm -g; npm update -g; sudo gem update --system; sudo gem update --no-rdoc --no-ri'
-
-# HTTP Requests. One of @janmoesen’s ProTip™s
-for method in GET HEAD POST PUT DELETE TRACE OPTIONS; do
-  alias "$method"="lwp-request -m '$method'"
-done

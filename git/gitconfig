@@ -10,18 +10,13 @@
         branch-diff = diff master...HEAD
         branch-files = "!git diff master...HEAD --name-status | sed '/^D/d ; s/^.\\s\\+//'"
 
+        rebasemerge = "!sh -c \"git checkout $1 && git pull && git rebase prod $1 && git checkout prod && git merge --ff-only $1\" -"
+
         # Commit
-        c = commit
-        ca = commit -a
-        cm = commit -m
-        cal = !git add -A && git commit              # Commit all changes
-        cam = commit -am
-        cne = commit --no-edit
         amend = commit --amend
         amend-all = !git add --all && git commit --amend --reuse-message=HEAD
 
         # Clone
-        cl = clone
         sclone = clone --depth=1
 
         # Checkout
@@ -36,19 +31,10 @@
         dc = diff --cached
         df = !"git diff-index --quiet HEAD -- || clear; git --no-pager diff --patch-with-stat"
 
-        # Merge
-        m = merge
-
         # Pull
-        up = pull
         plom = pull origin master
         plum = pull upstream master
         preb = !git fetch upstream && git rebase upstream/master
-
-        # Push
-        p = push
-        pom = push origin master
-        poh = push origin head
 
         # Stash
         st = stash
@@ -59,8 +45,9 @@
         ss = status -sb
         hist = log --graph --pretty=custom           # Show custom graph
         l = log --pretty=custom                      # Show custom log
-        ll = log --stat --abbrev-commit
         lc = shortlog --summary --numbered           # List contributors
+        changelog = "!sh -c \"git log --pretty='format:%h %s'\" -"
+        lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
 
         # Reset
         unstage = reset HEAD --                      # Mixed reset (affects HEAD and Index)
@@ -182,7 +169,7 @@
         tool = opendiff
 
 [core]
-        editor = nano
+        editor = vim
         abbrev = 12
         attributesfile = ~/.gitattributes
         excludesfile = ~/.gitignore
@@ -210,11 +197,6 @@
 [help]
         # Correct typos
         autocorrect = 1
-
-# Any GitHub repo with my username should be checked out r/w by default
-# http://rentzsch.tumblr.com/post/564806957/public-but-hackable-git-submodules
-[url "git@github.com:nicksp/"]
-        insteadOf = "git://github.com/nicksp/"
 
 # Rewrites of repo paths
 [url "git@github.com:"]

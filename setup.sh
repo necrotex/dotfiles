@@ -160,14 +160,6 @@ echo "done"
 # Actual symlink stuff
 #
 
-
-# Atom editor settings
-echo -n "Copying Atom settings.."
-mv -f ~/.atom ~/dotfiles_old/
-ln -s $HOME/dotfiles/atom ~/.atom
-echo "done"
-
-
 declare -a FILES_TO_SYMLINK=(
 
   'shell/shell_aliases'
@@ -237,7 +229,6 @@ main() {
   ln -fs $HOME/dotfiles/bin $HOME
 
   declare -a BINARIES=(
-    'batcharge.py'
     'crlf'
     'dups'
     'git-delete-merged-branches'
@@ -275,10 +266,6 @@ install_zsh () {
     if [[ ! -d $dir/oh-my-zsh/ ]]; then
       sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
     fi
-    # Set the default shell to zsh if it isn't currently set to zsh
-    if [[ ! $(echo $SHELL) == $(which zsh) ]]; then
-      chsh -s $(which zsh)
-    fi
   else
     # If zsh isn't installed, get the platform of the current machine
     platform=$(uname);
@@ -289,7 +276,7 @@ install_zsh () {
         install_zsh
       fi
       if [[ -f /etc/debian_version ]]; then
-        sudo apt-get install zsh
+        sudo apt-get install -y zsh
         install_zsh
       fi
     # If the platform is OS X, tell the user to install zsh :)
@@ -299,51 +286,38 @@ install_zsh () {
       exit
     fi
   fi
+
+  # Set the default shell to zsh
+  chsh -s $(which zsh)
 }
 
-# Package managers & packages
-
-# . "$DOTFILES_DIR/install/brew.sh"
-# . "$DOTFILES_DIR/install/npm.sh"
-
-# if [ "$(uname)" == "Darwin" ]; then
-    # . "$DOTFILES_DIR/install/brew-cask.sh"
-# fi
+#############################################################################
 
 main
-# install_zsh
 
-###############################################################################
-# Atom                                                                        #
-###############################################################################
+ask_for_confirmation "Install oh my zsh and set zsh as standard shell?"
+if answer_is_yes; then
+  install_zsh
+fi
 
-# Copy over Atom configs
-#cp -r atom/packages.list $HOME/.atom
+ask_for_confirmation "Install basic packages?"
+if answer_is_yes; then
+  . "$DOTFILES_DIR/install/basic.sh"
+fi
 
-# Install community packages
-#apm list --installed --bare - get a list of installed packages
-#apm install --packages-file $HOME/.atom/packages.list
+ask_for_confirmation "Install dev packages?"
 
-###############################################################################
-# Zsh                                                                         #
-###############################################################################
+if answer_is_yes; then
+  . "$DOTFILES_DIR/install/dev.sh"
+fi
 
-# Install Zsh settings
-ln -s ~/dotfiles/zsh/themes/nick.zsh-theme $HOME/.oh-my-zsh/themes
+ask_for_confirmation "Install desktop packages?"
+if answer_is_yes; then
+  . "$DOTFILES_DIR/install/desktop.sh"
+fi
 
+# create local configs
+[ -f ~/.zsh.local ] && touch ~/.zsh.local
+[ -f ~/.gitconfig.local ] && touch ~/.gitconfig.local
 
-###############################################################################
-# Terminal & iTerm 2                                                          #
-###############################################################################
-
-# Only use UTF-8 in Terminal.app
-defaults write com.apple.terminal StringEncodings -array 4
-
-# Install the Solarized Dark theme for iTerm
-open "${HOME}/dotfiles/iterm/themes/Solarized Dark.itermcolors"
-
-# Don’t display the annoying prompt when quitting iTerm
-defaults write com.googlecode.iterm2 PromptOnQuit -bool false
-
-# Reload zsh settings
-source ~/.zshrc
+print_info "Done. Run 'source ~/.zshrc' to reload zsh config."
